@@ -1,4 +1,4 @@
-package io.github.anderscheow.library
+package com.michaelsiddi.library
 
 import android.app.Activity
 import android.content.Context
@@ -17,15 +17,19 @@ import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import io.github.anderscheow.library.adapter.FeatureAdapter
-import io.github.anderscheow.library.listener.AnimationListener
-import io.github.anderscheow.library.listener.WhatsNewListener
-import io.github.anderscheow.library.model.Feature
-import io.github.anderscheow.library.util.AnimationFactory
-import io.github.anderscheow.library.util.FeatureItemAnimator
-import io.github.anderscheow.library.util.VerticalSpaceItemDecoration
+import com.michaelsiddi.library.adapter.FeatureAdapter
+import com.michaelsiddi.library.listener.AnimationListener
+import com.michaelsiddi.library.listener.WhatsNewListener
+import com.michaelsiddi.library.model.Feature
+import com.michaelsiddi.library.util.AnimationFactory
+import com.michaelsiddi.library.util.FeatureItemAnimator
+import com.michaelsiddi.library.util.VerticalSpaceItemDecoration
 
 class WhatsNew : FrameLayout {
 
@@ -113,6 +117,7 @@ class WhatsNew : FrameLayout {
         view = LayoutInflater.from(context).inflate(R.layout.whats_new, this)
 
         setupUI()
+        setupWindowInsets()
     }
 
     /**
@@ -127,6 +132,33 @@ class WhatsNew : FrameLayout {
         secondaryButton.setOnClickListener {
             listener?.onSecondaryButtonClicked(this)
         }
+    }
+
+    /**
+     *  Setup window insets handling to prevent content from being obscured by system bars.
+     */
+    private fun setupWindowInsets() {
+        val originalLeft = contentLayout.paddingLeft
+        val originalTop = contentLayout.paddingTop
+        val originalRight = contentLayout.paddingRight
+        val originalBottom = contentLayout.paddingBottom
+
+        ViewCompat.setOnApplyWindowInsetsListener(contentLayout) { view, windowInsets ->
+            val insets = windowInsets.getInsets(
+                WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.displayCutout()
+            )
+
+            view.setPadding(
+                originalLeft + insets.left,
+                originalTop + insets.top,
+                originalRight + insets.right,
+                originalBottom + insets.bottom
+            )
+
+            WindowInsetsCompat.CONSUMED
+        }
+
+        ViewCompat.requestApplyInsets(this)
     }
 
     /**
@@ -195,19 +227,12 @@ class WhatsNew : FrameLayout {
      *  Hide System UI.
      */
     private fun hideSystemUI() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            activity.window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_IMMERSIVE
-                    or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                    or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                    or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                    or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                    or View.SYSTEM_UI_FLAG_FULLSCREEN)
-        } else {
-            activity.window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                    or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                    or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                    or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                    or View.SYSTEM_UI_FLAG_FULLSCREEN)
+        WindowCompat.setDecorFitsSystemWindows(activity.window, false)
+
+        val windowInsetsController = WindowCompat.getInsetsController(activity.window, activity.window.decorView)
+        windowInsetsController?.let { controller ->
+            controller.hide(WindowInsetsCompat.Type.systemBars())
+            controller.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
         }
     }
 
@@ -215,9 +240,9 @@ class WhatsNew : FrameLayout {
      *  Show System UI.
      */
     private fun showSystemUI() {
-        activity.window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
+        val windowInsetsController = WindowCompat.getInsetsController(activity.window, activity.window.decorView)
+        windowInsetsController?.show(WindowInsetsCompat.Type.systemBars())
+        WindowCompat.setDecorFitsSystemWindows(activity.window, true)
     }
 
     /**

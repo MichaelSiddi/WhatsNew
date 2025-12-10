@@ -1,4 +1,4 @@
-package io.github.anderscheow.library.util
+package com.michaelsiddi.library.util
 
 import jp.wasabeef.recyclerview.animators.*
 

@@ -1,4 +1,4 @@
-package io.github.anderscheow.library.adapter
+package com.michaelsiddi.library.adapter
 
 import android.content.Context
 import android.content.res.ColorStateList
@@ -8,8 +8,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.widget.ImageViewCompat
-import io.github.anderscheow.library.R
-import io.github.anderscheow.library.model.Feature
+import com.michaelsiddi.library.R
+import com.michaelsiddi.library.model.Feature
 
 class FeatureAdapter(private val context: Context) : androidx.recyclerview.widget.RecyclerView.Adapter<FeatureAdapter.FeatureViewHolder>() {
 

@@ -1,9 +1,9 @@
-package io.github.anderscheow.library.util
+package com.michaelsiddi.library.util
 
 import android.animation.Animator
 import android.animation.ObjectAnimator
 import android.view.View
-import io.github.anderscheow.library.listener.AnimationListener
+import com.michaelsiddi.library.listener.AnimationListener
 
 /**
  * Created by mertsimsek on 25/01/16.

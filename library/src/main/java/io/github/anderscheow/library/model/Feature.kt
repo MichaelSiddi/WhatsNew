@@ -1,4 +1,4 @@
-package io.github.anderscheow.library.model
+package com.michaelsiddi.library.model
 
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable

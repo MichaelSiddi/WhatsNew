@@ -1,4 +1,4 @@
-package io.github.anderscheow.library.util
+package com.michaelsiddi.library.util
 
 import android.graphics.Rect
 import android.view.View

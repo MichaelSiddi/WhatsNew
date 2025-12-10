@@ -1,4 +1,4 @@
-package io.github.anderscheow.library;
+package com.michaelsiddi.library;
 
 import org.junit.Test;
 

@@ -1,6 +1,6 @@
-package io.github.anderscheow.library.listener
+package com.michaelsiddi.library.listener
 
-import io.github.anderscheow.library.WhatsNew
+import com.michaelsiddi.library.WhatsNew
 
 interface WhatsNewListener {
 

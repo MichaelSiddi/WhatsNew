@@ -1,4 +1,4 @@
-package io.github.anderscheow.whatsnew
+package com.michaelsiddi.whatsnew
 
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4
@@ -19,6 +19,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getTargetContext()
-        assertEquals("io.github.anderscheow.whatsnew", appContext.packageName)
+        assertEquals("com.michaelsiddi.whatsnew", appContext.packageName)
     }
 }

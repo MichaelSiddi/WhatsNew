@@ -8,11 +8,17 @@ Beautiful way to showcase new features of your app.
 
 ![](https://media.giphy.com/media/WgPaFtXbnYhr22UAaG/giphy.gif)
 
+## 🙏 Credits
+
+This is a fork of the original [WhatsNew library by Anders Cheow](https://github.com/anderscheow/WhatsNew).
+
+The original library was created and maintained by Anders Cheow. This fork has been updated to support modern Android versions (API 35/36) with proper window insets handling and edge-to-edge display.
+
 ## 💻 Installation
 
 ```groovy
 dependencies {
-  implementation 'io.github.anderscheow:whatsnew:1.0.1'
+  implementation 'com.michaelsiddi:whatsnew:2.0.0'
 }
 ```
 
@@ -98,17 +104,31 @@ Thanks to [RecyclerView Animators by wasabeef](https://github.com/wasabeef/recyc
 
 ## Changelog
 
-**1.1.0**
+**2.0.0** (This Fork)
+
+* **BREAKING CHANGE**: Minimum SDK version raised from 16 to 21
+* Updated to support API 35/36 (Android 15)
+* Replaced deprecated `systemUiVisibility` with modern `WindowInsetsControllerCompat`
+* Added proper window insets handling for edge-to-edge display
+* Fixed title overlapping status bar issue
+* Fixed continue button going behind navigation bar issue
+* Updated Gradle to 8.2 and Android Gradle Plugin to 8.1.0
+* Updated Kotlin from 1.3.21 to 1.9.20
+* Updated Java version from 8 to 17
+* Added AndroidX Core KTX dependency for modern window insets support
+* Changed package namespace from `io.github.anderscheow` to `com.michaelsiddi`
+
+**1.1.0** (Original Repository)
 
 * Updated Gradle and Kotlin version
 * Changed Android Support artifacts to AndroidX
 * Removed some install dependencies from README
 
-**1.0.1**
+**1.0.1** (Original Repository)
 
 * Add support for AndroidX
 
-**1.0.0**
+**1.0.0** (Original Repository)
 
 * Introduce What's New library
 

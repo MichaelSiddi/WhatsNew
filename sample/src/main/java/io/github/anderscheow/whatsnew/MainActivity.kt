@@ -1,15 +1,15 @@
-package io.github.anderscheow.whatsnew
+package com.michaelsiddi.whatsnew
 
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import io.github.anderscheow.library.WhatsNew
-import io.github.anderscheow.library.listener.WhatsNewListener
-import io.github.anderscheow.library.model.Feature
-import io.github.anderscheow.library.util.FeatureItemAnimator
-import kotlinx.android.synthetic.main.activity_main.*
+import com.michaelsiddi.library.WhatsNew
+import com.michaelsiddi.library.listener.WhatsNewListener
+import com.michaelsiddi.library.model.Feature
+import com.michaelsiddi.library.util.FeatureItemAnimator
 
 class MainActivity : AppCompatActivity() {
 
@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        button_demo.setOnClickListener {
+        findViewById<Button>(R.id.button_demo).setOnClickListener {
             buildWhatsNew()
         }
     }

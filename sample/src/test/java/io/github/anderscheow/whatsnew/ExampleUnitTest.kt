@@ -1,4 +1,4 @@
-package io.github.anderscheow.whatsnew
+package com.michaelsiddi.whatsnew
 
 import org.junit.Test
 
