@@ -91,6 +91,14 @@ class WhatsNew : FrameLayout {
      */
     private var isDismissing = false
 
+    /**
+     *  Store original system bar colors and appearance to restore on dismiss.
+     */
+    private var originalStatusBarColor: Int = 0
+    private var originalNavigationBarColor: Int = 0
+    private var originalLightStatusBars: Boolean = false
+    private var originalLightNavigationBars: Boolean = false
+
     private val selfHandler = Handler(Looper.getMainLooper())
 
     constructor(context: Context) : super(context) {
@@ -251,10 +259,18 @@ class WhatsNew : FrameLayout {
      *  On Android 30+, it's made transparent as insets handling works correctly.
      */
     private fun hideSystemUI() {
+        // Save original colors and appearance settings
+        originalStatusBarColor = activity.window.statusBarColor
+        originalNavigationBarColor = activity.window.navigationBarColor
+
         WindowCompat.setDecorFitsSystemWindows(activity.window, false)
 
         val windowInsetsController = WindowCompat.getInsetsController(activity.window, activity.window.decorView)
         windowInsetsController?.let { controller ->
+            // Save original appearance settings
+            originalLightStatusBars = controller.isAppearanceLightStatusBars
+            originalLightNavigationBars = controller.isAppearanceLightNavigationBars
+
             // On Android 29 and below, hide the navigation bar completely
             // as transparent bars don't provide proper insets
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q) {
@@ -262,7 +278,7 @@ class WhatsNew : FrameLayout {
                 controller.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
             }
 
-            // Make system bars use dark icons/buttons
+            // Make system bars use light icons/buttons (white icons on dark background)
             controller.isAppearanceLightStatusBars = false
             controller.isAppearanceLightNavigationBars = false
         }
@@ -273,7 +289,7 @@ class WhatsNew : FrameLayout {
     }
 
     /**
-     *  Show System UI and restore original colors.
+     *  Show System UI and restore original colors and appearance settings.
      *  Note: We don't change setDecorFitsSystemWindows back to true because the host activity
      *  manages its own edge-to-edge configuration and will restore it in onResume if needed.
      */
@@ -282,7 +298,18 @@ class WhatsNew : FrameLayout {
         // WindowCompat.setDecorFitsSystemWindows(activity.window, true)
 
         val windowInsetsController = WindowCompat.getInsetsController(activity.window, activity.window.decorView)
-        windowInsetsController?.show(WindowInsetsCompat.Type.systemBars())
+        windowInsetsController?.let { controller ->
+            // Show system bars (navigation bar might have been hidden on Android 29-)
+            controller.show(WindowInsetsCompat.Type.systemBars())
+
+            // Restore original appearance settings
+            controller.isAppearanceLightStatusBars = originalLightStatusBars
+            controller.isAppearanceLightNavigationBars = originalLightNavigationBars
+        }
+
+        // Restore original colors
+        activity.window.statusBarColor = originalStatusBarColor
+        activity.window.navigationBarColor = originalNavigationBarColor
     }
 
     /**
