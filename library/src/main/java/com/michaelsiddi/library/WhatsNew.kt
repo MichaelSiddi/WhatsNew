@@ -92,6 +92,11 @@ class WhatsNew : FrameLayout {
     private var isDismissing = false
 
     /**
+     *  Flag to track if we've already configured system UI (to prevent re-saving original values).
+     */
+    private var systemUIConfigured = false
+
+    /**
      *  Store original system bar colors and appearance to restore on dismiss.
      */
     private var originalStatusBarColor: Int = 0
@@ -115,11 +120,16 @@ class WhatsNew : FrameLayout {
 
     /**
      *  To determine whether window is focus.
-     *  Hide system UI when it's focused.
+     *  Hide system UI when it's focused, but only on first focus after showing.
+     *  Prevents hideSystemUI() from being called multiple times which can interfere
+     *  with button clicks and dismiss process.
      */
     override fun onWindowFocusChanged(hasWindowFocus: Boolean) {
         super.onWindowFocusChanged(hasWindowFocus)
-        if (hasWindowFocus) hideSystemUI()
+        // Only hide system UI if we haven't configured it yet and we're not dismissing
+        if (hasWindowFocus && !systemUIConfigured && !isDismissing) {
+            hideSystemUI()
+        }
     }
 
     /**
@@ -248,6 +258,7 @@ class WhatsNew : FrameLayout {
         listener?.onWhatsNewDismissed()
         listener = null
         isDismissing = false
+        systemUIConfigured = false  // Reset so it can be configured again if shown later
 
         showSystemUI()
     }
@@ -257,19 +268,25 @@ class WhatsNew : FrameLayout {
      *  Content draws behind system bars with proper window insets padding.
      *  On Android 29 and below, the navigation bar is hidden completely.
      *  On Android 30+, it's made transparent as insets handling works correctly.
+     *
+     *  Only saves original values on first call to prevent overwriting with modified values.
      */
     private fun hideSystemUI() {
-        // Save original colors and appearance settings
-        originalStatusBarColor = activity.window.statusBarColor
-        originalNavigationBarColor = activity.window.navigationBarColor
+        // Only save original colors and appearance settings once
+        if (!systemUIConfigured) {
+            originalStatusBarColor = activity.window.statusBarColor
+            originalNavigationBarColor = activity.window.navigationBarColor
+        }
 
         WindowCompat.setDecorFitsSystemWindows(activity.window, false)
 
         val windowInsetsController = WindowCompat.getInsetsController(activity.window, activity.window.decorView)
         windowInsetsController?.let { controller ->
-            // Save original appearance settings
-            originalLightStatusBars = controller.isAppearanceLightStatusBars
-            originalLightNavigationBars = controller.isAppearanceLightNavigationBars
+            // Only save original appearance settings once
+            if (!systemUIConfigured) {
+                originalLightStatusBars = controller.isAppearanceLightStatusBars
+                originalLightNavigationBars = controller.isAppearanceLightNavigationBars
+            }
 
             // On Android 29 and below, hide the navigation bar completely
             // as transparent bars don't provide proper insets
@@ -286,6 +303,9 @@ class WhatsNew : FrameLayout {
         // Make status bar and navigation bar transparent
         activity.window.statusBarColor = android.graphics.Color.TRANSPARENT
         activity.window.navigationBarColor = android.graphics.Color.TRANSPARENT
+
+        // Mark that we've configured the system UI
+        systemUIConfigured = true
     }
 
     /**
