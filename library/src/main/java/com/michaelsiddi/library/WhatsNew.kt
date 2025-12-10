@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import android.os.Build
 import android.os.Handler
+import android.os.Looper
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
@@ -85,7 +86,12 @@ class WhatsNew : FrameLayout {
      */
     private var listener: WhatsNewListener? = null
 
-    private var selfHandler = Handler()
+    /**
+     *  Flag to prevent multiple dismiss calls.
+     */
+    private var isDismissing = false
+
+    private val selfHandler = Handler(Looper.getMainLooper())
 
     constructor(context: Context) : super(context) {
         init()
@@ -125,8 +131,11 @@ class WhatsNew : FrameLayout {
      */
     private fun setupUI() {
         primaryButton.setOnClickListener {
-            dismiss()
-            listener?.onPrimaryButtonClicked(this)
+            if (!isDismissing) {
+                isDismissing = true
+                listener?.onPrimaryButtonClicked(this)
+                dismiss()
+            }
         }
 
         secondaryButton.setOnClickListener {
@@ -183,6 +192,7 @@ class WhatsNew : FrameLayout {
      */
     private fun showView() {
         visibility = View.VISIBLE
+        isDismissing = false
         listener?.onWhatsNewShowed(this)
         hideSystemUI()
 
@@ -221,6 +231,7 @@ class WhatsNew : FrameLayout {
 
         listener?.onWhatsNewDismissed()
         listener = null
+        isDismissing = false
 
         showSystemUI()
     }
