@@ -6,8 +6,6 @@
 # What's New
 Beautiful way to showcase new features of your app.
 
-![](https://media.giphy.com/media/WgPaFtXbnYhr22UAaG/giphy.gif)
-
 ## 🙏 Credits
 
 This is a fork of the original [WhatsNew library by Anders Cheow](https://github.com/anderscheow/WhatsNew).
@@ -18,7 +16,7 @@ The original library was created and maintained by Anders Cheow. This fork has b
 
 ```groovy
 dependencies {
-  implementation 'com.michaelsiddi:whatsnew:2.0.0'
+  implementation 'com.github.MichaelSiddi:WhatsNew:2.0.1'
 }
 ```
 
