@@ -247,9 +247,12 @@ class WhatsNew : FrameLayout {
 
     /**
      *  Show System UI and restore original colors.
+     *  Note: We don't change setDecorFitsSystemWindows back to true because the host activity
+     *  manages its own edge-to-edge configuration and will restore it in onResume if needed.
      */
     private fun showSystemUI() {
-        WindowCompat.setDecorFitsSystemWindows(activity.window, true)
+        // Don't change decorFitsSystemWindows - let the host activity manage it
+        // WindowCompat.setDecorFitsSystemWindows(activity.window, true)
 
         val windowInsetsController = WindowCompat.getInsetsController(activity.window, activity.window.decorView)
         windowInsetsController?.show(WindowInsetsCompat.Type.systemBars())
