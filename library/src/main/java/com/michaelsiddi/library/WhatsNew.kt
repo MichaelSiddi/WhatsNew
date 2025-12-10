@@ -164,7 +164,8 @@ class WhatsNew : FrameLayout {
                 originalBottom + insets.bottom
             )
 
-            WindowInsetsCompat.CONSUMED
+            // Return windowInsets instead of CONSUMED to allow proper insets dispatch
+            windowInsets
         }
     }
 
@@ -197,8 +198,15 @@ class WhatsNew : FrameLayout {
         hideSystemUI()
 
         // Request insets after view is attached and system UI is configured
-        // This is especially important for Android 29 where insets dispatch timing differs
-        ViewCompat.requestApplyInsets(contentLayout)
+        // On Android 29 and earlier, we need to wait for the next frame after window
+        // configuration changes before insets are properly available
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q) {
+            contentLayout.post {
+                ViewCompat.requestApplyInsets(contentLayout)
+            }
+        } else {
+            ViewCompat.requestApplyInsets(contentLayout)
+        }
 
         setupRecyclerView()
     }
