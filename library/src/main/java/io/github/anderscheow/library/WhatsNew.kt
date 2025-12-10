@@ -157,8 +157,6 @@ class WhatsNew : FrameLayout {
 
             WindowInsetsCompat.CONSUMED
         }
-
-        ViewCompat.requestApplyInsets(this)
     }
 
     /**
@@ -187,6 +185,10 @@ class WhatsNew : FrameLayout {
         visibility = View.VISIBLE
         listener?.onWhatsNewShowed(this)
         hideSystemUI()
+
+        // Request insets after view is attached and system UI is configured
+        // This is especially important for Android 29 where insets dispatch timing differs
+        ViewCompat.requestApplyInsets(contentLayout)
 
         setupRecyclerView()
     }
