@@ -13,7 +13,7 @@ The original library was created and maintained by Anders Cheow. This fork has b
 
 ```groovy
 dependencies {
-  implementation 'com.github.MichaelSiddi:WhatsNew:2.0.1'
+  implementation 'com.github.MichaelSiddi:WhatsNew:2.0.2'
 }
 ```
 
