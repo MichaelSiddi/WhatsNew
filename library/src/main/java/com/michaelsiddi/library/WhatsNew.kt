@@ -245,7 +245,7 @@ class WhatsNew : FrameLayout {
     }
 
     /**
-     *  Hide System UI by making status bar and navigation bar transparent.
+     *  Hide System UI by hiding navigation bar and making status bar transparent.
      *  Content draws behind system bars with proper window insets padding.
      */
     private fun hideSystemUI() {
@@ -253,8 +253,13 @@ class WhatsNew : FrameLayout {
 
         val windowInsetsController = WindowCompat.getInsetsController(activity.window, activity.window.decorView)
         windowInsetsController?.let { controller ->
-            // Make system bars transparent/translucent but don't hide them
-            // This allows proper window insets handling while giving edge-to-edge appearance
+            // Hide the navigation bar completely to provide immersive experience
+            controller.hide(WindowInsetsCompat.Type.navigationBars())
+
+            // Set behavior to show bars transiently when user swipes
+            controller.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+
+            // Make system bars use dark icons/buttons
             controller.isAppearanceLightStatusBars = false
             controller.isAppearanceLightNavigationBars = false
         }
