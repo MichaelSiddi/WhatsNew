@@ -1,7 +1,4 @@
-[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-WhatsNew-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/7164)
-[![](https://jitpack.io/v/anderscheow/WhatsNew.svg)](https://jitpack.io/#anderscheow/WhatsNew)
-[![Build Status](https://travis-ci.org/anderscheow/WhatsNew.svg?branch=master)](https://travis-ci.org/anderscheow/WhatsNew)
-[![PayPal](https://img.shields.io/badge/Say%20Thanks-!-1EAEDB.svg)](https://www.paypal.me/anderscheow/5)
+[![](https://jitpack.io/v/MichaelSiddi/WhatsNew.svg)](https://jitpack.io/#MichaelSiddi/WhatsNew)
 
 # What's New
 Beautiful way to showcase new features of your app.
